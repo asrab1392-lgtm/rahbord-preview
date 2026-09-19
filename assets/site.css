@@ -1,0 +1,692 @@
+/* راهبرد ایرانی — شیوه‌نامه سایت
+   مقادیر از بخش ۱۵ و قاعده‌های بخش ۲۲ سند تصمیم‌ها می‌آیند. */
+
+:root {
+  /* رنگ */
+  --page:      #F0EDE4;
+  --card:      #FFFFFF;
+  --ink:       #1A1A1A;
+  --ink-2:     #3A3A3A;
+  --ink-3:     #5C5C5C;
+  --ink-4:     #6B6B6B;   /* کف خاکستری متن ریز — روشن‌تر از این ممنوع (۲۲.۱) */
+  --ink-mute:  #8C8984;   /* فقط عدد درشتِ غیرفعال */
+  --accent:    #A3151B;   /* فقط وضعیت و اقدام اصلی (۲۲.۳) */
+  --avatar:    #E2D6CB;
+  --rule:      #DCD9D4;
+  --border:    #D6D6D6;
+  --hairline:  #EFEFEF;
+  --footer:    #2B2B2D;
+  --mark:      #FBE9AE;
+
+  /* مناطق — فقط به‌صورت نقطه، هیچ‌وقت رنگ متن (۲۲.۱) */
+  --r-me: #C27C2C;  --r-ua: #3E6BB0;  --r-us: #7B4AA0;
+  --r-eu: #2A8796;  --r-as: #5A8F3C;  --r-none: #9A968E;
+
+  /* مقیاس تایپ — هیچ اندازه دیگری مجاز نیست (۲۲.۲) */
+  --t-12: 12px; --t-13: 13px; --t-14: 14px; --t-16: 16px; --t-18: 18px;
+  --t-22: 22px; --t-26: 26px; --t-32: 32px; --t-42: 42px; --t-52: 52px;
+
+  /* فاصله داخلی — سه مقدار (۲۲.۴) */
+  --p-section: 28px 32px;
+  --p-card:    22px 24px;
+  --p-compact: 20px;
+
+  --radius: 12px;
+  --shadow: 0 1px 3px rgba(0, 0, 0, .08);
+  --gutter: 64px;        /* حداقل حاشیه افقی صفحه */
+  /* عرض محتوا؛ بوم: ۱۲۸۰ منهای دو حاشیه ۶۴ (بخش ۱۵). بدون این، چیدمان
+     تا لبه هر نمایشگری کش می‌آمد و خط متن به ۱۴۰ نویسه می‌رسید. */
+  --shell: 1152px;
+  --edge: max(var(--gutter), (100% - var(--shell)) / 2);
+  /* «آخرین تصاویر» در بوم حاشیه ۴۰px دارد نه ۶۴ — یعنی عمداً ۴۸px پهن‌تر
+     از بقیه. همان نسبت اینجا هم نگه داشته می‌شود. */
+  --edge-wide: max(40px, (100% - (var(--shell) + 48px)) / 2);
+  --side:   104px;       /* ستون ساعت و آواتار */
+  --aside:  320px;       /* ستون کناری */
+}
+
+@font-face {
+  font-family: Vazirmatn; font-style: normal; font-weight: 500;
+  src: url('fonts/Vazirmatn-Medium.woff2') format('woff2'); font-display: swap;
+}
+@font-face {
+  font-family: Vazirmatn; font-style: normal; font-weight: 700;
+  src: url('fonts/Vazirmatn-Bold.woff2') format('woff2'); font-display: swap;
+}
+@font-face {
+  font-family: Vazirmatn; font-style: normal; font-weight: 900;
+  src: url('fonts/Vazirmatn-Black.woff2') format('woff2'); font-display: swap;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--page);
+  color: var(--ink);
+  font-family: Vazirmatn, Tahoma, sans-serif;
+  font-weight: 500;
+  font-size: var(--t-14);
+  line-height: 1.6;
+}
+
+a { color: inherit; text-decoration: none; }
+a:hover { color: var(--accent); }
+h1, h2, h3, p, figure, blockquote { margin: 0; }
+img, video { display: block; max-width: 100%; }
+mark { background: var(--mark); color: var(--ink); padding: 0 2px; border-radius: 3px; }
+
+
+/* جداکننده فراداده: نقطه لخت کنار رقم فارسی با «۰» اشتباه می‌شود (۲۸.۱) */
+.sep { margin-inline: 7px; color: #A9A6A0; }
+
+/* ───────────────────────────── هدر ───────────────────────────── */
+
+.masthead { background: var(--card); box-shadow: var(--shadow); }
+.masthead__strip {
+  display: flex; align-items: center; justify-content: space-between;
+  height: 38px; padding: 0 var(--edge);
+  font-size: var(--t-12); color: var(--ink-4);
+  border-bottom: 1px solid var(--hairline);
+}
+.masthead__strip nav { display: flex; align-items: center; gap: 22px; }
+.masthead__strip a { color: var(--ink-2); }
+
+.masthead__name {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 10px var(--edge) 12px;
+}
+.logotype { font-size: var(--t-52); font-weight: 900; line-height: 1.3; white-space: nowrap; }
+.tagline  { font-size: var(--t-13); color: var(--ink-3); }
+
+.regions {
+  position: relative; display: flex; align-items: center; justify-content: center;
+  height: 52px; padding: 0 var(--edge); border-top: 1px solid var(--hairline);
+}
+.regions nav { display: flex; align-items: center; gap: 6px; }
+.chip {
+  display: flex; align-items: center; gap: 8px; height: 44px; padding: 0 18px;
+  border: 0; border-radius: 22px; background: transparent; color: var(--ink-2);
+  font: inherit; font-size: var(--t-14); cursor: pointer;
+}
+.chip[aria-current], .chip.is-on {
+  background: var(--accent); color: #fff; font-weight: 700;
+}
+.dot { width: 8px; height: 8px; border-radius: 12px; background: var(--r-none); flex-shrink: 0; }
+.chip.is-on .dot { background: #fff; }
+.search-btn {
+  position: absolute; left: 56px; width: 44px; height: 44px;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* ─────────────────────────── نوار زمانی ─────────────────────────── */
+
+.timeline { display: flex; flex-direction: column; gap: 16px; }
+
+.entry { display: grid; grid-template-columns: var(--side) minmax(0, 1fr); column-gap: 16px; }
+.entry__side {
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+  gap: 14px; padding: 2px 0 22px; text-align: center;
+}
+.entry__time { font-size: var(--t-26); font-weight: 900; line-height: 1; }
+.entry__ago  { font-size: var(--t-13); font-weight: 700; color: var(--ink-2); }
+.entry__date { font-size: var(--t-12); line-height: 1.6; color: var(--ink-3); }
+
+.avatar {
+  width: 76px; height: 76px; border-radius: 38px; flex-shrink: 0;
+  background: var(--avatar) center / cover no-repeat;
+  display: flex; align-items: center; justify-content: center;
+  font-size: var(--t-32); font-weight: 700; color: var(--ink);
+}
+.avatar--sm { width: 64px; height: 64px; border-radius: 32px; font-size: var(--t-26); }
+
+/* مونوگرام رسانه: اندازه از تعداد حرف، همه از مقیاس تایپ (۲۲.۲) */
+.mono { letter-spacing: .5px; }
+.mono--2 { font-size: var(--t-26); }
+.mono--3 { font-size: var(--t-22); }
+.avatar--sm.mono--2 { font-size: var(--t-22); }
+.avatar--sm.mono--3 { font-size: var(--t-18); }
+
+.card {
+  min-width: 0; display: flex; flex-direction: column;
+  border-radius: var(--radius); background: var(--card); box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.card__body { display: flex; flex-direction: column; gap: 12px; padding: var(--p-card); }
+.card__text { font-size: var(--t-16); line-height: 2; white-space: pre-line; }
+.card__text p, .lead__text p { margin: 0; }
+.card__text p + p, .lead__text p + p { margin-top: 12px; }
+.card__tags { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+.card__source {
+  max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  font-size: var(--t-14); font-weight: 700;
+}
+.card__foot {
+  display: flex; flex-wrap: nowrap; align-items: center; gap: 8px;
+  margin: 0 24px; padding: 14px 0 20px; border-top: 1px dashed var(--rule);
+}
+
+.badge {
+  display: inline-flex; align-items: center; padding: 1px 9px;
+  border-radius: 3px; background: transparent; color: var(--accent);
+  border: 1px solid currentColor;
+  font-size: var(--t-12); font-weight: 700; line-height: 1.7;
+  margin-inline-end: 10px; vertical-align: 2px;
+}
+/* روی تیتر درشت، برچسب هم‌قد متن نمی‌شود و باید کمی بالاتر بنشیند */
+.lead__head .badge { vertical-align: 0; }
+.pill {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 14px;
+  border: 1px solid var(--border); border-radius: 20px;
+  /* ⚠️ `font: inherit` لازم است: مرورگر به <button> فونت پیش‌فرض سیستم
+     می‌دهد و از body ارث نمی‌برد. دکمه «اشتراک» به همین دلیل با بقیه
+     سایت نمی‌خواند. هر جا <button> کلاسِ مشترک با <a> می‌گیرد، این خط
+     باید باشد. */
+  font: inherit; font-size: var(--t-13);
+  white-space: nowrap; background: var(--card); color: inherit;
+}
+.pill--strong { font-weight: 700; }
+
+/* قاب تصویر/ویدیو — همه‌جا یک کلاس */
+.frame {
+  position: relative; width: 100%; display: flex; align-items: center; justify-content: center;
+  padding: 0; border: 0; background: #D9D7D2 center / cover no-repeat;
+  font: inherit; color: var(--ink-4); cursor: zoom-in;
+}
+.frame--video { background-color: #2A2A2A; cursor: pointer; }
+.play {
+  width: 64px; height: 64px; border-radius: 32px; background: rgba(255, 255, 255, .92);
+  display: flex; align-items: center; justify-content: center; color: var(--ink);
+  transition: transform .12s ease;
+}
+.frame--video:hover .play { transform: scale(1.06); }
+
+/* پخش‌کننده‌ای که با کلیک جای قاب را می‌گیرد */
+.player { width: 100%; display: block; background: #000; object-fit: contain; }
+
+/* ─────────── متن بلند: «ادامه مطلب» بدون جاوااسکریپت (بخش ۳۱) ───────────
+   یک چک‌باکس پنهان و برچسبش. متن همیشه در صفحه هست — فقط بریده نمایش
+   داده می‌شود — پس جستجوی مرورگر و صفحه‌خوان کل متن را می‌بینند. */
+
+.clamp { position: relative; display: flex; flex-direction: column; }
+.clamp__box { position: absolute; width: 1px; height: 1px; opacity: 0; }
+
+.clamp__box:not(:checked) ~ .card__text,
+.clamp__box:not(:checked) ~ .lead__text {
+  max-height: 24em;                 /* ۱۲ خط در ارتفاع خط ۲ */
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(#000 calc(100% - 3.5em), transparent);
+  mask-image: linear-gradient(#000 calc(100% - 3.5em), transparent);
+}
+.clamp__box:not(:checked) ~ .lead__text { max-height: 12em; }
+
+.clamp__btn {
+  align-self: flex-start; display: inline-flex; align-items: center; gap: 8px;
+  min-height: 40px; margin-top: 4px; padding: 0 14px;
+  border: 1px solid var(--border); border-radius: 20px; background: var(--card);
+  font-size: var(--t-13); font-weight: 700; color: var(--ink); cursor: pointer;
+}
+.clamp__btn::before { content: 'ادامه مطلب'; }
+.clamp__box:checked ~ .clamp__btn::before { content: 'بستن'; }
+.clamp__btn::after {
+  /* پیکان: مرز پایین و راست، چرخش ۴۵ درجه → رو به پایین */
+  content: ''; width: 8px; height: 8px; flex-shrink: 0;
+  border: 1.8px solid currentColor; border-top: 0; border-left: 0;
+  transform: translateY(-3px) rotate(45deg);
+}
+.clamp__box:checked ~ .clamp__btn::after { transform: translateY(2px) rotate(-135deg); }
+.clamp__box:focus-visible ~ .clamp__btn { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+/* چاپ و حالت بدون CSS: متن هرگز پنهان نماند */
+@media print {
+  .clamp__box ~ .card__text, .clamp__box ~ .lead__text { max-height: none; mask-image: none; }
+  .clamp__btn { display: none; }
+}
+
+/* پستی که رسانه‌اش طبق قاعده نگه‌داری حذف شده؛ متن سر جایش است (۲۵.۵) */
+.archived {
+  display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+  padding: 10px 14px; border-radius: 8px; background: #F3F2EF;
+  font-size: var(--t-13); color: var(--ink-4);
+}
+.archived a { font-weight: 700; color: var(--ink-2); }
+.frame__dur {
+  position: absolute; bottom: 12px; left: 12px; padding: 2px 8px; border-radius: 3px;
+  background: rgba(0, 0, 0, .78); color: #fff; font-size: var(--t-12);
+}
+.frame--more { background: #4A4A4A; color: #fff; font-size: var(--t-22); font-weight: 700; }
+
+.card__media .grid, .grid { display: grid; gap: 3px; }
+.grid--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.grid--3 { grid-template-columns: 2fr 1fr; grid-auto-rows: 1fr; }
+.grid--3 .frame:first-child { grid-row: span 2; }
+.grid--4 { grid-template-columns: 2fr 1fr; grid-template-rows: repeat(3, 120px); }
+.grid--4 .frame:first-child { grid-row: span 3; }
+.grid--3 .frame, .grid--4 .frame { height: 100%; aspect-ratio: auto; }
+.grid--3 { grid-template-rows: 180px 180px; }
+
+.card--side .card__split { display: grid; grid-template-columns: 58% minmax(0, 1fr); }
+.card--side .frame { height: 100%; min-height: 306px; }
+
+/* ───────────────────────── تازه‌ترین پست ───────────────────────── */
+
+.lead { position: relative; padding: 32px var(--edge) 0; }
+.lead__card {
+  display: grid; grid-template-columns: minmax(0, 1fr) 540px; gap: 36px;
+  padding: var(--p-card); border-radius: var(--radius);
+  background: var(--card); box-shadow: var(--shadow);
+}
+.lead__main { display: flex; flex-direction: column; justify-content: center; gap: 20px; min-width: 0; padding: 12px 0; }
+.lead__head { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; min-width: 0; }
+.lead__text { font-size: var(--t-32); font-weight: 500; line-height: 1.6; white-space: pre-line; }
+.lead__main .card__foot { margin: 0; padding: 0; border: 0; }
+.lead__album { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: 186px 186px; gap: 8px; }
+.lead__album .frame { height: 100%; border-radius: var(--radius); overflow: hidden; }
+.lead__album .frame:first-child { grid-row: span 2; }
+.lead__one .frame { height: 380px; border-radius: var(--radius); overflow: hidden; }
+.lead__card--text { grid-template-columns: minmax(0, 1fr); }
+
+.byline { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.byline__lines { min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.byline__src { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: var(--t-18); font-weight: 700; }
+.byline__meta { font-size: var(--t-14); color: var(--ink-4); }
+.byline__time { font-size: var(--t-18); font-weight: 700; color: var(--ink); }
+.live { display: inline-flex; align-items: center; gap: 6px; font-size: var(--t-12); font-weight: 700; color: var(--accent); }
+.live .dot { background: var(--accent); }
+
+/* ─────────────────────────── آلبوم ─────────────────────────── */
+
+.album { display: flex; flex-direction: column; gap: 16px; padding: 34px var(--edge-wide) 52px; }
+.album__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; }
+.album__grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 6px; align-items: start; }
+.album__col  { display: flex; flex-direction: column; gap: 6px; }
+.shot {
+  position: relative; width: 100%; display: flex; align-items: flex-end;
+  padding: 0; border: 0; border-radius: var(--radius); overflow: hidden;
+  background: #D9D7D2; font: inherit; cursor: zoom-in; text-align: right;
+}
+.shot__cap {
+  position: relative; width: 100%; display: flex; flex-direction: column; gap: 4px;
+  padding: 44px 16px 14px; color: #fff;
+  background: linear-gradient(to top, rgba(0,0,0,.8), rgba(0,0,0,.32) 55%, transparent);
+}
+.shot__cap b { font-size: var(--t-13); font-weight: 700; line-height: 1.6;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.shot__cap span { font-size: var(--t-12); color: rgba(255,255,255,.75); }
+
+/* ─────────────────────── ستون کناری ─────────────────────── */
+
+.columns { display: flex; align-items: flex-start; gap: 28px; padding: 28px var(--edge) 48px; }
+.columns main { flex-grow: 1; min-width: 0; }
+.panel {
+  width: var(--aside); flex-shrink: 0; display: flex; flex-direction: column;
+  padding: var(--p-compact); border-radius: var(--radius);
+  background: var(--card); box-shadow: var(--shadow);
+}
+.panel h2 { font-size: var(--t-18); font-weight: 700; padding-bottom: 14px; border-bottom: 1px dashed var(--rule); }
+.panel__row {
+  display: grid; grid-template-columns: 56px minmax(0, 1fr); column-gap: 12px;
+  padding: 16px 0; border-bottom: 1px dashed var(--rule);
+}
+.panel__more {
+  display: flex; align-items: center; justify-content: space-between;
+  min-height: 48px; margin-top: 4px;
+  font-size: var(--t-14); font-weight: 700; color: var(--accent);
+}
+.thumb {
+  width: 56px; height: 56px; border-radius: var(--radius);
+  background: #D9D7D2 center / cover no-repeat;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--ink); font-size: var(--t-22); font-weight: 700;
+}
+
+/* ─────────────────────────── فوتر ─────────────────────────── */
+
+.foot {
+  background: var(--footer); color: #fff;
+  padding: 32px var(--edge) 26px;
+  display: flex; flex-direction: column; gap: 22px;
+}
+.foot a { color: #E8E5E0; }
+.foot a:hover { color: #fff; }
+.foot__top { display: flex; align-items: center; justify-content: space-between; gap: 40px; flex-wrap: wrap; }
+.foot__brand { font-size: var(--t-26); font-weight: 900; line-height: 1.3; }
+.foot__note  { font-size: var(--t-14); line-height: 1.6; color: #C8C5C0; }
+.messenger {
+  display: inline-flex; align-items: center; gap: 10px; height: 44px; padding: 0 14px;
+  border: 1px solid rgba(255,255,255,.55); border-radius: var(--radius);
+  color: #fff; font-size: var(--t-14); font-weight: 700;
+}
+.foot__nav {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 10px 26px;
+  padding-top: 18px; border-top: 1px solid rgba(255,255,255,.16); font-size: var(--t-14);
+}
+.foot__days {
+  display: grid; grid-template-columns: 96px minmax(0, 1fr) auto; align-items: center; gap: 16px;
+  padding-top: 18px; border-top: 1px solid rgba(255,255,255,.16);
+}
+.foot__days ol { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; margin: 0; padding: 0; list-style: none; }
+.daychip {
+  display: flex; align-items: center; justify-content: center; padding: 6px 8px;
+  border-radius: 8px; border: 1px solid rgba(255,255,255,.24);
+  font-size: var(--t-13); font-weight: 700;
+}
+.foot .daychip--now { background: #fff; color: var(--ink); border-color: #fff; }
+.foot__legal {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-top: 16px; border-top: 1px solid rgba(255,255,255,.16);
+  font-size: var(--t-12); color: rgba(255,255,255,.55);
+}
+
+/* ─────────────────── صفحه‌های درونی و اجزای مشترک ─────────────────── */
+
+.entry__stamp { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.avatar--inst { background-size: 44px 44px; background-color: var(--avatar); }
+.avatar--plain { color: var(--ink-3); }
+.dot--lg { width: 14px; height: 14px; border-radius: 8px; display: inline-block; margin-inline-end: 10px; }
+.pill__n { color: var(--ink-4); flex-shrink: 0; }
+.pill b { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 700; }
+.card__foot .share { margin-inline-start: auto; cursor: pointer; }
+
+.album__note { font-size: var(--t-13); color: var(--ink-3); }
+.album__head h2 { font-size: var(--t-22); font-weight: 700; }
+.shot--big .shot__cap { padding: 52px 20px 18px; }
+.shot--big .shot__cap b { font-size: var(--t-14); }
+.shot { background-size: cover; background-position: center; }
+
+.panel__text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.panel__text b { font-size: var(--t-14); font-weight: 700; line-height: 1.6; }
+.panel__region { font-size: var(--t-12); font-weight: 700; color: var(--ink-2); }
+.panel__meta { font-size: var(--t-12); color: var(--ink-4); }
+.thumb--letter { background: var(--avatar); font-weight: 900; }
+
+/* ستون کناری چندبخشی (صفحه پست) */
+.aside { width: var(--aside); flex-shrink: 0; display: flex; flex-direction: column; gap: 16px; }
+.aside .panel { width: 100%; }
+
+/* ردیف فشرده: ساعت + یک خط. جایگزین کارت کامل در فهرست‌های کناری (۲۷.۸) */
+.srow {
+  display: grid; grid-template-columns: 52px minmax(0, 1fr); column-gap: 12px;
+  padding: 14px 0; border-bottom: 1px dashed var(--rule);
+}
+.srow--now { background: #FAF7F0; }
+.srow__time { font-size: var(--t-13); font-weight: 700; color: var(--ink-4); }
+.srow--now .srow__time { font-weight: 900; color: var(--ink); }
+.srow__body { min-width: 0; display: flex; flex-direction: column; gap: 3px;
+  font-size: var(--t-14); line-height: 2; }
+.srow__lead { font-weight: 700; }
+.srow__now { font-size: var(--t-12); font-weight: 700; color: var(--accent); }
+.srow__region {
+  display: flex; align-items: center; gap: 6px;
+  font-size: var(--t-12); font-weight: 700; line-height: 1.6; color: var(--ink-2);
+}
+
+/* صفحه‌های بدون ستون کناری (روز، جستجو) متن را تا ۹۸۴ پیکسل کش می‌دادند
+   — ۱۰۹ نویسه در خط، در حالی که حد خوانایی ۷۵ است. سقف عرض ستون خواندن. */
+.columns--single main { width: 100%; max-width: 820px; margin-inline: auto; }
+.crumbs { font-size: var(--t-13); color: var(--ink-3); padding-bottom: 14px; }
+.pagehead { display: flex; flex-direction: column; gap: 10px; padding-bottom: 22px; }
+.pagehead h1 { font-size: var(--t-32); font-weight: 900; line-height: 1.3; display: flex; align-items: center; }
+.pagehead__meta { font-size: var(--t-14); color: var(--ink-3); display: flex; align-items: center; gap: 8px; }
+.pagehead__chips { display: flex; flex-wrap: wrap; gap: 8px; padding-top: 4px; }
+.pagenav { display: flex; gap: 10px; padding-top: 24px; }
+.dayline {
+  display: grid; grid-template-columns: var(--side) minmax(0, 1fr); column-gap: 16px;
+  align-items: center; padding-top: 18px;
+}
+.dayline__label { font-size: var(--t-13); font-weight: 700; text-align: center; }
+.dayline__note { font-size: var(--t-14); color: var(--ink-2); }
+/* لینک درون جمله است و فلش ندارد؛ پس قرمز نمی‌شود (۲۲.۳) */
+.dayline__note a { font-weight: 700; color: var(--ink); }
+.dayhead {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 16px;
+  padding: 34px 0 16px; font-size: var(--t-22); font-weight: 700;
+}
+.dayhead span { font-size: var(--t-13); font-weight: 500; color: var(--ink-3); }
+
+.tgroup { padding-bottom: 28px; }
+.tgroup h2 { font-size: var(--t-22); font-weight: 700; padding-bottom: 16px; }
+.tgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+.tcard {
+  display: flex; flex-direction: column; gap: 8px; padding: var(--p-compact);
+  border-radius: var(--radius); background: var(--card); box-shadow: var(--shadow);
+}
+.tcard__title { font-size: var(--t-18); font-weight: 700; line-height: 1.6; }
+.tcard__latest { font-size: var(--t-13); line-height: 2; color: var(--ink-3); }
+.tcard__meta {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  padding-top: 10px; border-top: 1px dashed var(--rule);
+  font-size: var(--t-13); font-weight: 700; color: var(--ink-2);
+}
+.tcard__n { font-weight: 500; color: var(--ink-4); }
+
+/* ماه‌های پیشین در آرشیو روزها — سطر فشرده، نه تقویم کامل */
+.mrows { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
+.mrow {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+  padding: 14px 16px; border-radius: var(--radius);
+  background: var(--card); box-shadow: var(--shadow);
+}
+.mrow b { font-size: var(--t-14); font-weight: 700; }
+.mrow span { font-size: var(--t-12); color: var(--ink-4); }
+
+/* «در یک نگاه» در صفحه پرونده */
+.fact { padding: 14px 0; border-bottom: 1px dashed var(--rule); }
+.fact__k { display: block; font-size: var(--t-12); font-weight: 700; color: var(--ink-4); }
+.fact__v { display: block; font-size: var(--t-14); line-height: 2; }
+.panel__row--plain { grid-template-columns: minmax(0, 1fr); }
+
+/* ستون کناری صفحه منطقه */
+.tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; padding-top: 14px; }
+.tile { aspect-ratio: 1 / 1; border-radius: 8px; background: #D9D7D2 center / cover no-repeat; }
+.faces { display: flex; flex-wrap: wrap; gap: 8px; padding-top: 14px; }
+.face {
+  width: 52px; height: 52px; border-radius: 26px;
+  background: var(--avatar) center / cover no-repeat;
+}
+
+.month { padding-bottom: 28px; }
+.month h2 { font-size: var(--t-22); font-weight: 700; padding-bottom: 14px; }
+.month__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 8px; }
+.daycell {
+  display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 14px 8px;
+  border-radius: var(--radius); background: var(--card); box-shadow: var(--shadow);
+}
+.daycell b { font-size: var(--t-22); font-weight: 900; }
+.daycell span { font-size: var(--t-12); color: var(--ink-4); }
+
+.searchbox { display: flex; align-items: center; gap: 10px; padding: 8px 8px 8px 16px;
+  border-radius: var(--radius); background: var(--card); box-shadow: var(--shadow); }
+.searchbox input {
+  flex-grow: 1; min-width: 0; border: 0; background: transparent; outline: 0;
+  font: inherit; font-size: var(--t-18); color: var(--ink); padding: 12px 8px;
+}
+.searchbox button {
+  width: 44px; height: 44px; flex-shrink: 0; border: 0; border-radius: 22px;
+  background: var(--accent); color: #fff; display: flex; align-items: center;
+  justify-content: center; cursor: pointer;
+}
+.filterrow {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 10px 8px; padding-top: 14px;
+}
+.filterrow__k { font-size: var(--t-13); font-weight: 700; color: var(--ink-2); }
+.filters { display: flex; flex-wrap: wrap; gap: 8px; }
+.filters .pill { cursor: pointer; }
+.filters .pill.is-on { background: var(--ink); color: #fff; border-color: var(--ink); }
+.searchnote { font-size: var(--t-13); color: var(--ink-3); padding: 10px 0 18px; }
+.results { display: flex; flex-direction: column; gap: 12px; }
+.result {
+  display: flex; flex-direction: column; gap: 6px; padding: var(--p-card);
+  border-radius: var(--radius); background: var(--card); box-shadow: var(--shadow);
+}
+.result__src { font-size: var(--t-14); font-weight: 700; }
+.result__text { font-size: var(--t-14); line-height: 2; }
+.result__meta { font-size: var(--t-12); color: var(--ink-4); }
+
+.foot__msgs { display: flex; align-items: center; gap: 14px; flex-shrink: 0; flex-wrap: wrap; }
+.foot__msgrow { display: flex; align-items: stretch; gap: 10px; }
+.foot__admin { margin-inline-start: auto; display: flex; align-items: center; gap: 8px; }
+.foot__daylabel { font-size: var(--t-13); font-weight: 700; }
+
+.sharemenu {
+  position: absolute; bottom: 52px; left: 0; z-index: 4;
+  display: flex; flex-direction: column; min-width: 200px; padding: 6px;
+  border-radius: var(--radius); background: var(--card); box-shadow: 0 8px 28px rgba(0, 0, 0, .18);
+}
+.sharemenu a, .sharemenu button {
+  display: flex; align-items: center; min-height: 44px; padding: 0 12px; border: 0;
+  border-radius: 8px; background: transparent; font: inherit; font-size: var(--t-14);
+  color: var(--ink); text-align: start; cursor: pointer;
+}
+.sharemenu a:hover, .sharemenu button:hover { background: #F3F2EF; }
+.card__foot, .lead__main .card__foot { position: relative; }
+
+.lightbox {
+  position: fixed; inset: 0; z-index: 20; display: flex; align-items: center;
+  justify-content: center; padding: 40px; background: rgba(0, 0, 0, .88);
+}
+.lightbox[hidden] { display: none; }
+.lightbox img { max-width: 100%; max-height: 82vh; border-radius: 6px; margin-inline: auto; }
+.lightbox figcaption { padding-top: 14px; color: #EDEAE4; font-size: var(--t-14); text-align: center; max-width: 720px; }
+.lightbox__close {
+  position: absolute; top: 20px; left: 24px; width: 44px; height: 44px; border: 0;
+  border-radius: 22px; background: rgba(255, 255, 255, .14); color: #fff;
+  font-size: 26px; line-height: 1; cursor: pointer;
+}
+
+/* ─────────────────────────── موبایل ───────────────────────────
+   نسخه کامل موبایل هنوز طراحی نشده (سند، قدم‌های بعدی).
+   این فقط جلوی شکستن را می‌گیرد. */
+
+@media (max-width: 900px) {
+  :root { --gutter: 16px; --side: 64px; }
+  .columns { flex-direction: column; }
+  .panel { width: 100%; }
+  .lead__card { grid-template-columns: minmax(0, 1fr); }
+  .album__grid { grid-template-columns: 1fr 1fr; }
+  .card--side .card__split { grid-template-columns: minmax(0, 1fr); }
+  .logotype { font-size: var(--t-32); }
+  .lead__text { font-size: var(--t-22); }
+  .foot__days { grid-template-columns: 1fr; }
+  .foot__days ol { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* ─────────────── لایه معنایی: تیتر، برچسب، شبکه و نوار (بخش ۳۳) ───────────────
+   واحد صفحه اول تیتر است نه پست. این بخش اجزای تازه را می‌سازد و اندازه متن
+   پست صدر را پایین می‌آورد، چون حالا تیتر بار درشتی را می‌برد. */
+
+/* برچسب بالای تیتر */
+.kicker { display: flex; align-items: center; gap: 8px; font-size: var(--t-12);
+  font-weight: 700; line-height: 1.6; margin-bottom: 6px; }
+.kicker__t { color: var(--accent); }
+.kicker__p { color: var(--ink-4); }
+.kicker__p::before { content: '·'; margin-left: 8px; color: var(--rule); }
+.kicker__p:hover { color: var(--ink-2); text-decoration: underline; }
+
+/* تیتر داخل کارت نوار زمانی */
+.card__title { margin: 0 0 8px; font-size: var(--t-18); font-weight: 700; line-height: 1.45; }
+.card__title a { color: inherit; }
+.card__title a:hover { text-decoration: underline; }
+h1.card__title { font-size: var(--t-26); line-height: 1.4; margin-bottom: 10px; }
+.card__sum { margin: 0 0 10px; font-size: var(--t-16); color: var(--ink-3); line-height: 1.7; }
+
+/* پست صدر: تیتر بار درشتی را می‌برد، نه متن */
+.lead__title { margin: 0 0 10px; font-size: var(--t-42); font-weight: 900; line-height: 1.3; }
+.lead__title a { color: inherit; }
+.lead__title a:hover { text-decoration: underline; }
+.lead__sum { margin: 0 0 14px; font-size: var(--t-18); color: var(--ink-3); line-height: 1.75; }
+.lead__text { font-size: var(--t-16); line-height: 1.9; }
+.clamp__box:not(:checked) ~ .lead__text { max-height: 9em; }
+
+/* سرِ بخش */
+.shead { display: flex; align-items: baseline; justify-content: space-between; gap: 16px;
+  padding: 30px var(--edge) 12px; }
+.columns .shead { padding-inline: 0; padding-top: 4px; }
+.shead h2 { margin: 0; font-size: var(--t-22); font-weight: 700; }
+.shead a { font-size: var(--t-13); font-weight: 700; color: var(--accent); }
+.shead a:hover { text-decoration: underline; }
+.shead__note { font-size: var(--t-13); color: var(--ink-4); }
+
+/* شبکه کارت‌های برجسته */
+.fgrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px;
+  padding: 0 var(--edge); }
+.columns .fgrid { padding-inline: 0; }
+.fcard { display: flex; flex-direction: column; background: var(--card);
+  border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; color: inherit; }
+.fcard:hover .fcard__title { text-decoration: underline; }
+.fcard__img { aspect-ratio: 16 / 10; background: #D9D7D2 center / cover no-repeat; }
+.fcard__img--none { background: var(--avatar); }
+.fcard__body { padding: 14px 18px 16px; display: flex; flex-direction: column; gap: 4px; }
+.fcard__title { font-size: var(--t-18); font-weight: 700; line-height: 1.45; }
+.fcard__meta { font-size: var(--t-12); color: var(--ink-4); }
+
+/* نوار زمانی فشرده */
+.wire { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow);
+  padding: 4px 22px; }
+.wire__row { display: grid; grid-template-columns: minmax(52px, max-content) minmax(0, 1fr) auto;
+  align-items: baseline; column-gap: 16px; padding: 12px 0;
+  border-bottom: 1px solid var(--hairline); color: inherit; }
+.wire__row:last-child { border-bottom: 0; }
+.wire__row:hover .wire__title { text-decoration: underline; }
+.wire__time { font-size: var(--t-13); font-weight: 700; color: var(--ink-3); white-space: nowrap; }
+.wire__title { font-size: var(--t-16); font-weight: 500; line-height: 1.7; }
+.wire__tag { font-size: var(--t-12); color: var(--ink-4); white-space: nowrap; }
+.wire__cam { font-size: 8px; color: var(--ink-mute); margin-right: 8px; vertical-align: 2px; }
+.wire__more { padding-top: 16px; }
+
+@media (max-width: 900px) {
+  .fgrid { grid-template-columns: 1fr; }
+  .lead__title { font-size: var(--t-32); }
+}
+
+/* برچسب موضوع در فهرست‌های فشرده — جانشین نقطه رنگی منطقه */
+.srow__tag { display: block; font-size: var(--t-12); color: var(--ink-4); margin-top: 2px; }
+.panel__region { font-size: var(--t-12); font-weight: 700; color: var(--ink-3); }
+
+/* عکس آلبوم که به پست می‌رود، نه به نمایشگر تمام‌صفحه */
+/* ⚠️ display را عوض نکنید: .shot با flex و align-items:flex-end زیرنویس
+   را ته تصویر می‌نشاند. یک بار display:block گذاشتم و زیرنویس‌ها
+   پریدند بالای عکس. */
+.shot--link { cursor: pointer; text-decoration: none; color: #fff; }
+.shot--link .shot__cap b { text-decoration: none; }
+.shot--link:hover .shot__cap b { text-decoration: underline; }
+
+/* تیتر در نتیجه جستجو */
+.result__title { display: block; font-size: var(--t-18); font-weight: 700; line-height: 1.45; }
+.result__title + .result__src { margin-top: 4px; }
+
+/* ─────────── گزارش لحظه‌ای و روزشمار پرونده (بخش ۴۰) ─────────── */
+
+/* تیکر عمداً کارت نیست و لینک هم نیست: صفحه‌ای ندارد که به آن برود.
+   وزنش باید از تیتر خبر کمتر باشد، وگرنه همان شلوغی قبلی برمی‌گردد. */
+.tick {
+  display: grid; grid-template-columns: minmax(48px, max-content) minmax(0, 1fr);
+  gap: 12px; align-items: baseline;
+  padding: 7px 0; border-bottom: 1px dashed var(--rule);
+}
+.tick:last-child { border-bottom: 0; }
+.tick__time { font-size: var(--t-12); font-weight: 700; color: var(--ink-4); white-space: nowrap; }
+.tick__text { font-size: var(--t-14); line-height: 1.75; color: var(--ink-3); }
+.tick:target { background: var(--mark); }
+
+.ticks {
+  margin-top: 10px; padding: 10px 16px 6px;
+  border-inline-start: 2px solid var(--rule); background: transparent;
+}
+.ticks__k {
+  display: block; margin-bottom: 4px;
+  font-size: var(--t-12); font-weight: 700; color: var(--ink-4);
+}
+
+/* تیکر وقتی وسط نوار زمانیِ کارت‌هاست (صفحه روز، پرونده کوچک) */
+.timeline > .tick { padding-inline-start: 16px; padding-inline-end: 16px; }
+
+.droll { display: flex; flex-direction: column; gap: 28px; }
+.dgroup__head {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+  margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--rule);
+  font-size: var(--t-18); font-weight: 700;
+}
+.dgroup__head a { color: var(--ink); }
+.dgroup__head a:hover { color: var(--accent); }
+.dgroup__n { font-size: var(--t-12); font-weight: 400; color: var(--ink-4); white-space: nowrap; }
